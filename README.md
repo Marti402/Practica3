@@ -1,4 +1,4 @@
-# Practica3
+# **Practica3**
 ## Introducción
 La práctica se centra en el uso de wifi y bluetooth, utilizando el microprocesador ESP32. Se generará un servidor web desde la placa y se establecerá una comunicación serie con un dispositivo móvil a través de bluetooth.
 
