@@ -66,3 +66,140 @@ void loop() {
 }
 
 ```
+La respuesta del sistema es:
+```c++
+Conectando a WiFi...
+.
+WiFi conectado con éxito.
+Dirección IP: 192.168.50.119
+Servidor HTTP iniciado.
+```
+```c++
+void handle_root() {
+  String HTML = "<!DOCTYPE html>\
+  <html>\
+  <head>\
+      <meta charset='UTF-8'>\
+      <meta name='viewport' content='width=device-width, initial-scale=1.0'>\
+      <title>ESP32 WebServer</title>\
+      <style>\
+          body {\
+              font-family: Arial, sans-serif;\
+              text-align: center;\
+              margin: 50px;\
+              animation: changeBackground 10s infinite;\
+              position: relative;\
+          }\
+          h1 {\
+              color: #4CAF50;\
+              animation: fadeIn 3s ease-in-out;\
+          }\
+          .dinosaurio {\
+              position: relative;\
+              width: 150px;\
+              height: 100px;\
+              background-color: #4CAF50;\
+              border-radius: 10px;\
+              margin: 20px auto;\
+          }\
+          .dinosaurio .cabeza {\
+              position: absolute;\
+              top: -10px;\
+              left: 20px;\
+              width: 50px;\
+              height: 50px;\
+              background-color: #2c6b31;\
+              border-radius: 50%;\
+          }\
+          .dinosaurio .piernas {\
+              position: absolute;\
+              bottom: -10px;\
+              left: 25px;\
+              width: 100px;\
+              height: 20px;\
+              background-color: #2c6b31;\
+              border-radius: 5px;\
+          }\
+          .dinosaurio .cola {\
+              position: absolute;\
+              bottom: 10px;\
+              right: -40px;\
+              width: 40px;\
+              height: 15px;\
+              background-color: #2c6b31;\
+              border-radius: 15px;\
+              transform: rotate(45deg);\
+          }\
+          .sun {\
+              position: absolute;\
+              bottom: 10px;\
+              left: 50%;\
+              transform: translateX(-50%);\
+              width: 80px;\
+              height: 80px;\
+              background-color: #FFD700;\
+              border-radius: 50%;\
+              animation: sunRiseAndSet 10s infinite;\
+          }\
+          @keyframes fadeIn {\
+              0% { opacity: 0; }\
+              100% { opacity: 1; }\
+          }\
+          @keyframes changeBackground {\
+              0% { background-color: #ffb3b3; }\
+              25% { background-color: #ffcc99; }\
+              50% { background-color: #99ccff; }\
+              65% { background-color:rgb(0, 0, 0); }\
+              75% { background-color: #c2ff99; }\
+              85% { background-color:rgb(254, 0, 0); }\
+              100% { background-color: #ffb3b3; }\
+          }\
+          @keyframes sunRiseAndSet {\
+              0% { bottom: -1000px; }\
+              25% { bottom: 1000px; }\
+              50% { bottom: 1000px; }\
+              65% { bottom: -1000px; }\
+              75% { bottom: -1000px; }\
+              85% { bottom: 1000px; }\
+              100% { bottom: -1000px; }\
+          }\
+      </style>\
+  </head>\
+  <body>\
+      <h1>¡Un Dinosaurio en la ONU! 🦖🌍</h1>\
+      <div class='dinosaurio'>\
+          <div class='cabeza'></div>\
+          <div class='piernas'></div>\
+          <div class='cola'></div>\
+      </div>\
+      <div class='sun'></div>\
+      <p>¡Bienvenido a mi página web con ESP32! 🌐</p>\
+  </body>\
+  </html>";
+  
+  server.send(200, "text/html", HTML);  // Enviar la respuesta con el HTML y estilo
+}
+```
+
+
+
+#include "BluetoothSerial.h"
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+BluetoothSerial SerialBT;
+void setup() {
+Serial.begin(115200);
+SerialBT.begin("ESP32test"); //Bluetooth device name
+Serial.println("The device started, now you can pair it with bluetooth!");
+}
+void loop() {
+if (Serial.available()) {
+SerialBT.write(Serial.read());
+}
+if (SerialBT.available()) {
+Serial.write(SerialBT.read());
+}
+delay(20);
+}
+
