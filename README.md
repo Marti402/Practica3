@@ -1,6 +1,33 @@
 # Practica3
 Participants: Alexandre Pascual / Marti Vila
-```c++
+# Informe de Laboratorio: Servidor Web y Bluetooth en ESP32-S3
+
+## Introducción
+
+Este laboratorio tiene como objetivo explorar las capacidades de la placa **ESP32-S3**, configurándola como un **servidor web** y habilitando la **comunicación Bluetooth** para transmitir información, específicamente la temperatura del procesador en tiempo real.
+
+El trabajo se divide en **dos partes**:
+
+1. Creación de un **servidor web** accesible desde una red WiFi local.
+2. Implementación de **Bluetooth** para la transmisión de datos a un dispositivo móvil.
+
+---
+
+## Parte 1: Servidor Web con ESP32-S3
+
+### Objetivo
+
+Configurar la placa **ESP32-S3** como un servidor web, permitiendo a los usuarios acceder a una página HTML mediante una red WiFi.
+
+### Desarrollo
+
+Para este apartado, el ESP32 se conecta a la red WiFi de la clase y aloja una página web accesible desde cualquier dispositivo en la misma red. Se utilizó la librería **WiFi.h** y **WebServer.h** para manejar la conexión y las solicitudes HTTP.
+
+#### Código Inicial
+
+El siguiente código establece la conexión WiFi y crea un servidor web en el puerto 80:
+
+```cpp
 #include <WiFi.h>
 #include <WebServer.h>
 #include <Arduino.h>
@@ -66,7 +93,11 @@ void loop() {
 }
 
 ```
-La respuesta del sistema es:
+
+
+
+La respuesta que debería salir por pantalla es:
+
 ```c++
 Conectando a WiFi...
 .
@@ -74,7 +105,16 @@ WiFi conectado con éxito.
 Dirección IP: 192.168.50.119
 Servidor HTTP iniciado.
 ```
-```c++
+Modificación del Código
+
+Luego de esto, el ejercicio pedía cambios, por lo que decidiomos incluir algunas variaciones del codigo HTML de nuestro agrado.
+Algunas de las variaciones incluyen:
+
+- Cambio dinámico de colores de fondo.
+- Un sol que se mueve de arriba a abajo.
+- Un dinosaurio creado con CSS.
+
+```cpp
 void handle_root() {
   String HTML = "<!DOCTYPE html>\
   <html>\
@@ -128,16 +168,16 @@ void handle_root() {
               height: 15px;\
               background-color: #2c6b31;\
               border-radius: 15px;\
-              transform: rotate(45deg);\
+              transform: rotate(40deg);\
           }\
           .sun {\
               position: absolute;\
               bottom: 10px;\
               left: 50%;\
               transform: translateX(-50%);\
-              width: 80px;\
-              height: 80px;\
-              background-color: #FFD700;\
+              width: 90px;\
+              height: 90px;\
+              background-color: #FFFF20;\
               border-radius: 50%;\
               animation: sunRiseAndSet 10s infinite;\
           }\
@@ -147,20 +187,28 @@ void handle_root() {
           }\
           @keyframes changeBackground {\
               0% { background-color: #ffb3b3; }\
-              25% { background-color: #ffcc99; }\
+              10% { background-color: #00FFFF; }\
+              20% { background-color: #32CD32; }\
+              30% { background-color: #ffcc99; }\
+              40% { background-color: #663399; }\
               50% { background-color: #99ccff; }\
-              65% { background-color:rgb(0, 0, 0); }\
-              75% { background-color: #c2ff99; }\
-              85% { background-color:rgb(254, 0, 0); }\
+              60% { background-color: #FFFF00; }\
+              70% { background-color: #c2ff99; }\
+              80% { background-color: #FF8C00; }\
+              90% { background-color: #DB7093; }\
               100% { background-color: #ffb3b3; }\
           }\
           @keyframes sunRiseAndSet {\
               0% { bottom: -1000px; }\
-              25% { bottom: 1000px; }\
+              10% { bottom: 1000px; }\
+              20% { bottom: -1000px; }\
+              30% { bottom: 1000px; }\
+              40% { bottom: -1000px; }\
               50% { bottom: 1000px; }\
-              65% { bottom: -1000px; }\
-              75% { bottom: -1000px; }\
-              85% { bottom: 1000px; }\
+              60% { bottom: -1000px; }\
+              70% { bottom: 1000px; }\
+              80% { bottom: -1000px; }\
+              90% { bottom: 1000px; }\
               100% { bottom: -1000px; }\
           }\
       </style>\
@@ -173,7 +221,7 @@ void handle_root() {
           <div class='cola'></div>\
       </div>\
       <div class='sun'></div>\
-      <p>¡Bienvenido a mi página web con ESP32! 🌐</p>\
+      <p>¡Bienvenido a mi página web con ESP32! Hecho por Alexandre y Martí 😎 </p>\
   </body>\
   </html>";
   
@@ -181,25 +229,56 @@ void handle_root() {
 }
 ```
 
+---
 
+## Parte 2: Comunicación Bluetooth con ESP32-S3
 
+El objetivo de esta segunda parte es configurar la placa **ESP32-S3** como un dispositivo Bluetooth para permitir la transmisión de datos en tiempo real a un teléfono móvil.
+Como hubo algunos problemas con la placa ESP32-S3, el profesor nos instó a usar los siguientes recursos para copletar el laboratorio:
+- **Aplicación BLE Scanner** 
+- **Librería NimBLE-Arduino** 
+Con estas herramientas nos ha sido posible terminar la practica de forma exitosa.
+
+### Desarrollo
+
+El siguiente código configura el ESP32 como un **dispositivo Bluetooth serie**, permitiendo recibir y enviar datos desde el móvil:
+
+```cpp
 #include "BluetoothSerial.h"
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#error Bluetooth is not enabled! Please run `make menuconfig` to enable it
 #endif
+
 BluetoothSerial SerialBT;
+
 void setup() {
-Serial.begin(115200);
-SerialBT.begin("ESP32test"); //Bluetooth device name
-Serial.println("The device started, now you can pair it with bluetooth!");
-}
-void loop() {
-if (Serial.available()) {
-SerialBT.write(Serial.read());
-}
-if (SerialBT.available()) {
-Serial.write(SerialBT.read());
-}
-delay(20);
+    Serial.begin(115200);
+    SerialBT.begin("ESP32test"); // Nombre del dispositivo Bluetooth
+    Serial.println("The device started, now you can pair it with Bluetooth!");
 }
 
+void loop() {
+    if (Serial.available()) {
+        SerialBT.write(Serial.read());
+    }
+    if (SerialBT.available()) {
+        Serial.write(SerialBT.read());
+    }
+    delay(20);
+}
+```
+
+### Visualización de Datos en el Móvil
+
+Al conectarse con la aplicación **BLE Scanner**, se visualizava en **tiempo real la temperatura del procesador** de la placa. Esta funcionalidad permite monitorear el rendimiento térmico del ESP32-S3.
+
+---
+
+## Conclusiones
+
+- Se logró configurar el **ESP32-S3** como un **servidor web**, permitiendo el acceso a una página personalizada desde una red WiFi.
+- Se implementaron **animaciones en HTML y CSS**, mejorando la estética y la interactividad de la página.
+- Se habilitó la **conexión Bluetooth** del ESP32-S3, permitiendo la transmisión de información a un teléfono móvil.
+- Se visualizó en tiempo real la **temperatura del procesador**, lo que puede ser útil para el monitoreo del rendimiento del ESP32.
+
+Este laboratorio permitió explorar diferentes capacidades del ESP32-S3, combinando conectividad WiFi y Bluetooth en una misma aplicación. 🚀
