@@ -15,13 +15,9 @@ El trabajo se divide en **dos partes**:
 
 ## Parte 1: Servidor Web con ESP32-S3
 
-### Objetivo
-
-Configurar la placa **ESP32-S3** como un servidor web, permitiendo a los usuarios acceder a una página HTML mediante una red WiFi.
-
 ### Desarrollo
 
-Para este apartado, el ESP32 se conecta a la red WiFi de la clase y aloja una página web accesible desde cualquier dispositivo en la misma red. Se utilizó la librería **WiFi.h** y **WebServer.h** para manejar la conexión y las solicitudes HTTP.
+Para este apartado, el ESP32 se conecta a la red WiFi de la clase y aloja una página web accesible desde cualquier dispositivo en la misma red. Se utilizó la librería **WiFi.h** y **WebServer.h** para manejar la conexión.
 
 #### Código Inicial
 
@@ -94,9 +90,7 @@ void loop() {
 
 ```
 
-
-
-La respuesta que debería salir por pantalla es:
+**La respuesta que debería salir por pantalla es:**
 
 ```c++
 Conectando a WiFi...
@@ -105,14 +99,15 @@ WiFi conectado con éxito.
 Dirección IP: 192.168.50.119
 Servidor HTTP iniciado.
 ```
-Modificación del Código
 
-Luego de esto, el ejercicio pedía cambios, por lo que decidiomos incluir algunas variaciones del codigo HTML de nuestro agrado.
+##### Modificación del Código
+
+Luego de esto, el ejercicio pedía que cambiaramos la pagina web, por lo que decidiomos incluir algunas variaciones del codigo HTML personalizadas.
 Algunas de las variaciones incluyen:
 
-- Cambio dinámico de colores de fondo.
-- Un sol que se mueve de arriba a abajo.
-- Un dinosaurio creado con CSS.
+- *Cambio dinámico de colores de fondo.*
+- *Un sol que se mueve de arriba a abajo.*
+- *Un dinosaurio creado con CSS. (El CSS es un lenguaje de diseño web que permite dar estilo y diseño a las páginas web escritas en HTML)*
 
 ```cpp
 void handle_root() {
@@ -234,10 +229,10 @@ void handle_root() {
 ## Parte 2: Comunicación Bluetooth con ESP32-S3
 
 El objetivo de esta segunda parte es configurar la placa **ESP32-S3** como un dispositivo Bluetooth para permitir la transmisión de datos en tiempo real a un teléfono móvil.
-Como hubo algunos problemas con la placa ESP32-S3, el profesor nos instó a usar los siguientes recursos para copletar el laboratorio:
+Como hubo algunos problemas con la placa ESP32-S3, el profesor nos recomendó usar los siguientes recursos para copletar el laboratorio:
 - **Aplicación BLE Scanner** 
 - **Librería NimBLE-Arduino** 
-Con estas herramientas nos ha sido posible terminar la practica de forma exitosa.
+Con estas herramientas nos ha sido posible terminar la practica.
 
 ### Desarrollo
 
@@ -270,7 +265,7 @@ void loop() {
 
 ### Visualización de Datos en el Móvil
 
-Al conectarse con la aplicación **BLE Scanner**, se visualizava en **tiempo real la temperatura del procesador** de la placa. Esta funcionalidad permite monitorear el rendimiento térmico del ESP32-S3.
+Al conectarse con la aplicación **BLE Scanner**, se visualizava en *tiempo real* la **temperatura** del procesador de la placa. Esta funcionalidad permite monitorear el rendimiento térmico del ESP32-S3.
 
 ---
 
@@ -280,5 +275,3 @@ Al conectarse con la aplicación **BLE Scanner**, se visualizava en **tiempo rea
 - Se implementaron **animaciones en HTML y CSS**, mejorando la estética y la interactividad de la página.
 - Se habilitó la **conexión Bluetooth** del ESP32-S3, permitiendo la transmisión de información a un teléfono móvil.
 - Se visualizó en tiempo real la **temperatura del procesador**, lo que puede ser útil para el monitoreo del rendimiento del ESP32.
-
-Este laboratorio permitió explorar diferentes capacidades del ESP32-S3, combinando conectividad WiFi y Bluetooth en una misma aplicación. 🚀
